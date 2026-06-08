@@ -6,6 +6,8 @@ import ai_module
 import requests
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from PIL import Image
 
 # PAGE CONFIG
@@ -1288,7 +1290,8 @@ with open(summary_only_path, "w") as f:
 
 # SLACK ALERT WITH PANEL DETAILS
 import os
-slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL")
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
+
 # Get top 3 problem panels for alert
 if len(anomalies) > 0:
     top_problem_panels = anomalies['SOURCE_KEY'].value_counts().head(3)
@@ -1335,7 +1338,7 @@ else:
     )
 
 try:
-    response = requests.post(slack_webhook_url, json={"text": message}, timeout=5)
+    response = requests.post(SLACK_WEBHOOK_URL, json={"text": message}, timeout=5)
     if response.status_code == 200:
         print("✓ Slack alert sent successfully.")
     else:
